@@ -1,56 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f5f4ed" />
-    <meta name="description" content="Zhilong Wan is a master's student at Tsinghua University and a member of the EDI Lab, with interests in embodied intelligence, probability, and statistics." />
-    <title>Zhilong Wan</title>
-    <style>
-      :root { color-scheme: light; }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        min-height: 100vh;
-        min-height: 100svh;
-        display: grid;
-        place-items: center;
-        padding: 64px 28px;
-        background: #f5f4ed;
-        color: #30302c;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        -webkit-font-smoothing: antialiased;
-      }
-      main { width: min(100%, 700px); }
-      h1 {
-        margin: 0 0 30px;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: clamp(36px, 4.8vw, 56px);
-        font-weight: 400;
-        letter-spacing: -0.035em;
-        line-height: 1.2;
-      }
-      h1 span { white-space: nowrap; }
-      p {
-        margin: 0;
-        color: #585750;
-        font-size: clamp(18px, 1.7vw, 20px);
-        letter-spacing: -0.01em;
-        line-height: 1.8;
-      }
-      .welcome {
-        margin-top: 28px;
-        color: #6b6962;
-        font-size: clamp(17px, 1.6vw, 19px);
-      }
-      ::selection { background: #e8d7c8; }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Hi, I’m <span>Zhilong Wan.</span></h1>
-      <p>I’m a master’s student at Tsinghua University and a member of the EDI Lab. My interests include embodied intelligence, probability, and statistics.</p>
-      <p class="welcome">Welcome to my little corner of the web. Thanks for stopping by!</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f4eb" />
+  <meta name="description" content="Zhilong Wan, a master’s student at Tsinghua University and a member of the EDI Lab. Interested in embodied intelligence, probability, and statistics." />
+  <title>Zhilong Wan</title>
+  <style>
+    :root { color-scheme: light; --paper:#f7f4eb; --ink:#292722; --soft:#666258; --petal:#dba58d; --line:#ded8cc; }
+    * { box-sizing:border-box; }
+    [hidden] { display:none !important; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
+    body.intro-playing { overflow:hidden; }
+    button { font:inherit; color:inherit; cursor:pointer; }
+    button:focus-visible { outline:2px solid #9f5945; outline-offset:6px; }
+    ::selection { background:#e8baa4; }
+    .paper-grain { position:fixed; inset:0; z-index:20; pointer-events:none; opacity:.105; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.5' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode:multiply; }
+    .filter-defs { position:absolute; width:0; height:0; overflow:hidden; }
+    .site { width:min(1180px,calc(100% - 112px)); margin:auto; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; padding:35px 0 18px; min-height:89px; }
+    .monogram { font-family:Georgia,"Times New Roman",serif; font-size:25px; font-style:italic; letter-spacing:-.07em; }
+    .masthead-note { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); }
+    .hero { flex:1; display:grid; grid-template-columns:1.2fr 1fr; align-items:center; gap:28px; padding:30px 0 48px; }
+    .intro-copy { position:relative; z-index:1; padding:20px 0; }
+    h1 { font-family:Georgia,"Times New Roman",serif; font-size:clamp(46px,5.8vw,78px); font-weight:400; line-height:1.1; letter-spacing:-.045em; margin:0 0 31px; }
+    h1 span { display:block; }
+    .bio { max-width:535px; font-size:clamp(17px,1.48vw,19px); line-height:1.9; color:#59564e; margin:0; text-wrap:pretty; }
+    .welcome { margin:22px 0 0; color:#726c61; font-size:clamp(16px,1.35vw,18px); line-height:1.8; max-width:500px; }
+    .drawing { position:relative; margin:0; width:100%; max-width:450px; justify-self:end; transform:rotate(-3deg); }
+    .drawing::before { content:""; position:absolute; width:63%; height:58%; left:15%; top:21%; background:#ebc9b64f; border-radius:47% 53% 58% 42% / 44% 56% 44% 56%; transform:rotate(12deg); filter:blur(28px); }
+    .drawing svg { display:block; position:relative; width:100%; height:auto; overflow:visible; }
+    .drawing .petal-still { fill:var(--petal); }
+    .footer { min-height:86px; padding:18px 0 23px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .closing { font-family:Georgia,"Times New Roman",serif; font-size:18px; font-style:italic; margin:0; color:#70695d; }
+    .replay { border:0; background:none; padding:12px 0 12px 12px; display:flex; align-items:center; gap:9px; min-height:44px; font-size:12px; color:#655e53; }
+    .replay svg { width:15px; height:15px; transition:transform .35s; }
+    .replay:hover svg { transform:rotate(-45deg); }
+    .intro { position:fixed; z-index:10; inset:0; overflow:hidden; background:var(--paper); }
+    .intro-stage { position:absolute; inset:0; display:grid; place-items:center; }
+    .intro-drawing { width:min(76vw,480px,68svh); overflow:visible; }
+    .ink-path { stroke-dasharray:1; stroke-dashoffset:1; }
+    .flower-paint { fill:var(--petal); }
+    .story-line,.greeting-line { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; margin:0; padding:35px; pointer-events:none; opacity:0; }
+    .story-line { font-family:Georgia,"Times New Roman",serif; font-style:italic; font-size:clamp(29px,4.35vw,62px); font-weight:400; line-height:1.25; letter-spacing:-.04em; }
+    .greeting-line { font-family:Georgia,"Times New Roman",serif; font-size:clamp(36px,5vw,68px); font-weight:400; line-height:1.18; letter-spacing:-.04em; }
+    .intro-controls { position:absolute; z-index:3; right:max(28px,env(safe-area-inset-right)); bottom:max(23px,env(safe-area-inset-bottom)); }
+    .skip { border:0; background:none; font-size:12px; min-height:44px; padding:12px 10px; color:#42372f; display:flex; align-items:center; gap:12px; }
+    .skip::after { content:""; width:23px; height:1px; background:currentColor; }
+    .intro-note { position:absolute; left:32px; bottom:39px; font-family:Georgia,"Times New Roman",serif; font-size:16px; font-style:italic; color:#70695d; margin:0; }
+    body.intro-playing .site { opacity:0; }
+    body.revealing .site { opacity:1; animation:arrive .85s both; }
+    @keyframes arrive { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @media (min-width:1600px) { .site { width:min(1280px,calc(100% - 160px)); } .drawing { max-width:500px; } }
+    @media (max-width:760px) {
+      .site { width:calc(100% - 48px); }
+      .masthead { padding-top:22px; min-height:66px; }
+      .masthead-note { font-size:9px; letter-spacing:.12em; }
+      .hero { grid-template-columns:1fr; gap:0; padding:38px 0 30px; }
+      .intro-copy { padding:0; }
+      h1 { font-size:clamp(46px,10.5vw,66px); margin-bottom:24px; }
+      .bio { font-size:17px; line-height:1.85; }
+      .welcome { font-size:16px; margin-top:18px; }
+      .drawing { width:min(75%,300px); margin:16px auto -4px; justify-self:center; }
+      .footer { align-items:center; min-height:78px; gap:14px; }
+      .closing { max-width:165px; font-size:15px; line-height:1.45; }
+      .replay { font-size:11px; white-space:nowrap; gap:6px; }
+      .intro-note { left:24px; bottom:39px; font-size:14px; }
+      .intro-controls { right:14px; }
+      .story-line { padding:24px; }
+      .greeting-line { max-width:100%; padding:28px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { animation:none !important; transition:none !important; }
+      .intro { display:none !important; }
+      body.intro-playing .site { opacity:1; }
+      .replay { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="filter-defs" aria-hidden="true"><defs>
+    <filter id="soft-ink" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency=".033" numOctaves="2" seed="7" result="grain"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="grain" scale="1.7" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </defs></svg>
+  <div class="paper-grain" aria-hidden="true"></div>
+  <div class="site" id="site">
+    <header class="masthead"><span class="monogram" aria-label="Zhilong Wan">zw.</span><span class="masthead-note">A personal space</span></header>
+    <main class="hero" id="main" tabindex="-1">
+      <div class="intro-copy">
+        <h1>Hi, I’m<span>Zhilong Wan.</span></h1>
+        <p class="bio">I’m a master’s student at Tsinghua University and a member of the EDI Lab. My interests include embodied intelligence, probability, and statistics.</p>
+        <p class="welcome">Welcome to my little corner of the web. Thanks for stopping by!</p>
+      </div>
+      <figure class="drawing" aria-hidden="true">
+        <svg viewBox="0 0 700 760" fill="none"><g stroke="#292722" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#soft-ink)">
+    
+    <path class="still-line" pathLength="1" stroke-width="14.5" d="M 320,247 C 314,280 320,315 319,350 C 318,393 321,435 317,478 C 315,520 316,550 315,578 C 314,596 313,611 316,625"/>
+    
+    <path class="still-line" pathLength="1" stroke-width="15.5" d="M 321,383 C 340,341 364,296 399,270 C 418,256 435,254 448,261 C 466,271 470,286 461,301 C 451,325 431,337 410,343 C 378,353 349,371 321,383"/>
+    
+    <path class="still-line" pathLength="1" stroke-width="14.5" d="M 130,517 C 148,519 167,523 184,516 C 198,519 202,501 206,486 C 214,453 228,426 253,405 C 276,385 297,373 314,386 C 331,399 319,417 297,426 C 273,436 254,453 253,478 C 251,500 274,514 294,521 C 312,529 334,530 350,521 C 369,511 384,495 391,478 C 400,458 390,439 372,435 C 351,431 332,423 320,408"/>
+    
+    <path class="still-line" pathLength="1" stroke-width="13.5" d="M 322,389 C 345,375 368,377 391,390 C 418,405 433,428 433,456 C 436,484 421,512 402,534"/>
+    
+    <path class="still-line" pathLength="1" stroke-width="16" d="M 401,533 C 420,518 442,487 453,455 C 464,426 473,398 489,397 C 507,394 515,408 510,430 C 505,454 489,477 475,497 C 458,522 440,540 423,552"/>
+    <path class="still-line" pathLength="1" stroke-width="14" d="M 425,552 C 450,532 480,498 495,467 C 506,443 517,434 530,441 C 548,450 542,473 531,496 C 518,521 500,546 486,565 C 474,580 461,594 450,599"/>
+    <path class="still-line" pathLength="1" stroke-width="15" d="M 451,598 C 473,581 501,548 519,517 C 532,495 540,479 552,486 C 570,495 557,526 546,550 C 533,578 513,605 491,628 C 467,652 439,668 411,680"/>
+  </g><path class="petal-still" d="M 320 90 C 354 84 391 112 398 150 C 412 193 386 228 350 244 C 309 261 270 241 248 207 C 226 163 245 120 280 101 C 292 94 305 92 320 90 Z"></path></svg>
+      </figure>
     </main>
-  </body>
+    <footer class="footer"><p class="closing">become a part of the story</p><button class="replay" id="replay" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8a8 8 0 1 1-1 7M4 3v6h6"></path></svg>Replay the opening</button></footer>
+  </div>
+  <section class="intro" id="intro" aria-label="Opening animation" hidden data-phase="idle">
+    <div class="intro-stage" aria-hidden="true">
+      <svg class="intro-drawing" id="intro-art" viewBox="0 0 700 760" fill="none">
+        <g class="ink" stroke="#292722" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#soft-ink)">
+    
+    <path class="ink-path" pathLength="1" stroke-width="14.5" d="M 320,247 C 314,280 320,315 319,350 C 318,393 321,435 317,478 C 315,520 316,550 315,578 C 314,596 313,611 316,625"/>
+    
+    <path class="ink-path" pathLength="1" stroke-width="15.5" d="M 321,383 C 340,341 364,296 399,270 C 418,256 435,254 448,261 C 466,271 470,286 461,301 C 451,325 431,337 410,343 C 378,353 349,371 321,383"/>
+    
+    <path class="ink-path" pathLength="1" stroke-width="14.5" d="M 130,517 C 148,519 167,523 184,516 C 198,519 202,501 206,486 C 214,453 228,426 253,405 C 276,385 297,373 314,386 C 331,399 319,417 297,426 C 273,436 254,453 253,478 C 251,500 274,514 294,521 C 312,529 334,530 350,521 C 369,511 384,495 391,478 C 400,458 390,439 372,435 C 351,431 332,423 320,408"/>
+    
+    <path class="ink-path" pathLength="1" stroke-width="13.5" d="M 322,389 C 345,375 368,377 391,390 C 418,405 433,428 433,456 C 436,484 421,512 402,534"/>
+    
+    <path class="ink-path" pathLength="1" stroke-width="16" d="M 401,533 C 420,518 442,487 453,455 C 464,426 473,398 489,397 C 507,394 515,408 510,430 C 505,454 489,477 475,497 C 458,522 440,540 423,552"/>
+    <path class="ink-path" pathLength="1" stroke-width="14" d="M 425,552 C 450,532 480,498 495,467 C 506,443 517,434 530,441 C 548,450 542,473 531,496 C 518,521 500,546 486,565 C 474,580 461,594 450,599"/>
+    <path class="ink-path" pathLength="1" stroke-width="15" d="M 451,598 C 473,581 501,548 519,517 C 532,495 540,479 552,486 C 570,495 557,526 546,550 C 533,578 513,605 491,628 C 467,652 439,668 411,680"/>
+  </g>
+        <g id="flower-motion"><path class="flower-paint" id="flower" d=""></path></g>
+      </svg>
+    </div>
+    <p class="story-line" id="story" aria-hidden="true">become a part of the story</p>
+    <p class="greeting-line" id="greeting" aria-hidden="true">Hi, I’m Zhilong Wan.</p>
+    <p class="intro-note" id="intro-note" aria-hidden="true">a little story, drawn by hand</p>
+    <div class="intro-controls"><button class="skip" id="skip" type="button">Skip intro</button></div>
+  </section>
+  <script>
+  (() => {
+    'use strict';
+    const intro = document.getElementById('intro');
+    const site = document.getElementById('site');
+    const main = document.getElementById('main');
+    const skip = document.getElementById('skip');
+    const replay = document.getElementById('replay');
+    const art = document.getElementById('intro-art');
+    const flower = document.getElementById('flower');
+    const flowerMotion = document.getElementById('flower-motion');
+    const story = document.getElementById('story');
+    const greeting = document.getElementById('greeting');
+    const note = document.getElementById('intro-note');
+    const ink = [...intro.querySelectorAll('.ink-path')];
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const canAnimate = typeof Element.prototype.animate === 'function';
+    const DURATION = 9100;
+    let frame = 0, startTime = 0, active = false, animations = [], focusOnEnd = false;
+    let expansion = 35;
+    const clamp = v => Math.max(0, Math.min(1, v));
+    const smooth = v => { v = clamp(v); return v*v*(3-2*v); };
+    const lerp = (a,b,p) => a+(b-a)*p;
+    const phase = (t,a,b) => smooth((t-a)/(b-a));
+    function bloomPath(open) {
+      let d = '';
+      for (let i=0;i<=112;i++) {
+        const a = i/112*Math.PI*2;
+        const r = lerp(78,104,open)*(1+open*.26*Math.cos(7*a+.25)+.017*Math.sin(3*a)+.012*Math.cos(11*a));
+        d += `${i?'L':'M'}${(320+Math.cos(a)*r).toFixed(2)},${(170+Math.sin(a)*r).toFixed(2)} `;
+      }
+      return d+'Z';
+    }
+    function resize() {
+      if (!active) return;
+      const box=art.getBoundingClientRect(), scale=box.width/700;
+      const x=box.left+320*scale, y=box.top+170*scale;
+      const farthest=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+      expansion=farthest/(68*scale)+2;
+    }
+    function tween(element, keyframes, options) {
+      const animation=element.animate(keyframes,{fill:'both',...options});
+      animations.push(animation);
+      return animation;
+    }
+    function finish(moveFocus=false) {
+      const wasActive=active;
+      active=false;
+      cancelAnimationFrame(frame);
+      animations.forEach(animation=>animation.cancel());
+      animations=[];
+      intro.hidden=true;
+      intro.dataset.phase='done';
+      site.inert=false;
+      site.removeAttribute('aria-hidden');
+      document.body.classList.remove('intro-playing');
+      if (wasActive && !reduced.matches) document.body.classList.add('revealing');
+      if (moveFocus || document.activeElement===skip) main.focus({preventScroll:true});
+    }
+    function render(now) {
+      if (!active) return;
+      const t=now-startTime;
+      if (t>=DURATION) { finish(focusOnEnd); return; }
+      const open=phase(t,2550,3700);
+      flower.setAttribute('d',bloomPath(open));
+      const reveal=phase(t,550,1580);
+      const spread=phase(t,3660,5050);
+      const magnify=lerp(.02,1,reveal)*lerp(1,expansion,spread*spread);
+      flowerMotion.setAttribute('transform',`translate(320 170) scale(${magnify}) translate(-320 -170)`);
+      flowerMotion.style.opacity=String(phase(t,450,950));
+      note.style.opacity=String(1-phase(t,2600,3300));
+      story.style.opacity=String(phase(t,4980,5500)*(1-phase(t,6500,6900)));
+      story.style.transform=`translateY(${lerp(12,0,phase(t,4980,5500))}px)`;
+      greeting.style.opacity=String(phase(t,6880,7360)*(1-phase(t,8000,8460)));
+      greeting.style.transform=`translateY(${lerp(10,0,phase(t,6880,7360))}px)`;
+      intro.style.opacity=String(1-phase(t,8280,9100));
+      if (t>8280) { document.body.classList.remove('intro-playing'); document.body.classList.add('revealing'); }
+      intro.dataset.phase=t<2550?'draw':t<3660?'bloom':t<5500?'wash':t<7360?'story':t<8280?'greeting':'reveal';
+      frame=requestAnimationFrame(render);
+    }
+    function play(manual=false) {
+      finish(false);
+      if (reduced.matches || !canAnimate) return;
+      focusOnEnd=manual;
+      active=true;
+      document.body.classList.remove('revealing');
+      document.body.classList.add('intro-playing');
+      site.inert=true;
+      site.setAttribute('aria-hidden','true');
+      intro.hidden=false;
+      intro.style.opacity='1';
+      intro.dataset.phase='draw';
+      story.style.opacity='0'; greeting.style.opacity='0';
+      note.style.opacity='1';
+      flowerMotion.style.opacity='0';
+      flower.setAttribute('d',bloomPath(0));
+      flowerMotion.setAttribute('transform','translate(320 170) scale(.02) translate(-320 -170)');
+      const durations=[570,580,900,430,520,490,540];
+      const delays=[100,410,790,1450,1630,1870,2090];
+      ink.forEach((path,i)=>tween(path,[{strokeDashoffset:1},{strokeDashoffset:0}],{duration:durations[i],delay:delays[i],easing:'cubic-bezier(.3,.1,.3,1)'}));
+      resize();
+      startTime=performance.now();
+      frame=requestAnimationFrame(render);
+      if (manual) skip.focus({preventScroll:true});
+    }
+    skip.addEventListener('click',()=>finish(true));
+    replay.addEventListener('click',()=>play(true));
+    document.addEventListener('keydown',event=>{if(active && event.key==='Escape') {event.preventDefault();finish(true);}});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden && active) finish(false);});
+    window.addEventListener('resize',resize,{passive:true});
+    reduced.addEventListener('change',()=>{if(reduced.matches) finish(false); replay.hidden=reduced.matches || !canAnimate;});
+    window.addEventListener('pagehide',()=>finish(false));
+    replay.hidden=reduced.matches || !canAnimate;
+    try { play(false); } catch(error) { finish(false); }
+  })();
+  </script>
+</body>
 </html>
