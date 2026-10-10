@@ -15,7 +15,7 @@
     button { font:inherit; color:inherit; cursor:pointer; }
     button:focus-visible { outline:2px solid #9f5945; outline-offset:6px; }
     ::selection { background:#e8baa4; }
-    .paper-grain { position:fixed; inset:0; z-index:20; pointer-events:none; opacity:.105; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.5' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode:multiply; }
+    .paper-grain { position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:20; pointer-events:none; opacity:.105; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.5' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode:multiply; }
     .filter-defs { position:absolute; width:0; height:0; overflow:hidden; }
     .site { width:min(1180px,calc(100% - 112px)); margin:auto; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; }
     .masthead { display:flex; align-items:center; justify-content:space-between; padding:35px 0 18px; min-height:89px; }
@@ -36,12 +36,12 @@
     .replay { border:0; background:none; padding:12px 0 12px 12px; display:flex; align-items:center; gap:9px; min-height:44px; font-size:12px; color:#655e53; }
     .replay svg { width:15px; height:15px; transition:transform .35s; }
     .replay:hover svg { transform:rotate(-45deg); }
-    .intro { position:fixed; z-index:10; inset:0; overflow:hidden; background:var(--paper); }
-    .intro-stage { position:absolute; inset:0; display:grid; place-items:center; }
-    .intro-drawing { width:min(76vw,480px,68svh); overflow:visible; }
+    .intro { position:fixed; z-index:10; top:0; right:0; bottom:0; left:0; inset:0; overflow:hidden; background:var(--paper); }
+    .intro-stage { position:absolute; top:0; right:0; bottom:0; left:0; inset:0; display:grid; place-items:center; }
+    .intro-drawing { width:min(76vw,480px,68vh); width:min(76vw,480px,68svh); overflow:visible; }
     .ink-path { stroke-dasharray:1; stroke-dashoffset:1; }
     .flower-paint { fill:var(--petal); }
-    .story-line,.greeting-line { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; margin:0; padding:35px; pointer-events:none; opacity:0; }
+    .story-line,.greeting-line { position:absolute; top:0; right:0; bottom:0; left:0; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; margin:0; padding:35px; pointer-events:none; opacity:0; }
     .story-line { font-family:Georgia,"Times New Roman",serif; font-style:italic; font-size:clamp(29px,4.35vw,62px); font-weight:400; line-height:1.25; letter-spacing:-.04em; }
     .greeting-line { font-family:Georgia,"Times New Roman",serif; font-size:clamp(36px,5vw,68px); font-weight:400; line-height:1.18; letter-spacing:-.04em; }
     .intro-controls { position:absolute; z-index:3; right:max(28px,env(safe-area-inset-right)); bottom:max(23px,env(safe-area-inset-bottom)); }
@@ -72,9 +72,8 @@
     }
     @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { animation:none !important; transition:none !important; }
-      .intro { display:none !important; }
-      body.intro-playing .site { opacity:1; }
-      .replay { display:none; }
+      body:not(.motion-requested) .intro { display:none !important; }
+      body.intro-playing:not(.motion-requested) .site { opacity:1; }
     }
   </style>
 </head>
@@ -156,7 +155,7 @@
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const canAnimate = typeof Element.prototype.animate === 'function';
     const DURATION = 9100;
-    let frame = 0, startTime = 0, active = false, animations = [], focusOnEnd = false;
+    let frame = 0, startTime = 0, active = false, animations = [], focusOnEnd = false, pendingAutoplay = false;
     let expansion = 35;
     const clamp = v => Math.max(0, Math.min(1, v));
     const smooth = v => { v = clamp(v); return v*v*(3-2*v); };
@@ -186,6 +185,7 @@
     function finish(moveFocus=false) {
       const wasActive=active;
       active=false;
+      document.body.classList.remove('motion-requested');
       cancelAnimationFrame(frame);
       animations.forEach(animation=>animation.cancel());
       animations=[];
@@ -220,8 +220,10 @@
     }
     function play(manual=false) {
       finish(false);
-      if (reduced.matches || !canAnimate) return;
+      if ((!manual && reduced.matches) || !canAnimate) return;
       focusOnEnd=manual;
+      pendingAutoplay=false;
+      document.body.classList.toggle('motion-requested',manual);
       active=true;
       document.body.classList.remove('revealing');
       document.body.classList.add('intro-playing');
@@ -246,12 +248,20 @@
     skip.addEventListener('click',()=>finish(true));
     replay.addEventListener('click',()=>play(true));
     document.addEventListener('keydown',event=>{if(active && event.key==='Escape') {event.preventDefault();finish(true);}});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden && active) finish(false);});
+    document.addEventListener('visibilitychange',()=>{
+      if (document.hidden && active) finish(false);
+      else if (!document.hidden && pendingAutoplay) { pendingAutoplay=false; play(false); }
+    });
     window.addEventListener('resize',resize,{passive:true});
-    reduced.addEventListener('change',()=>{if(reduced.matches) finish(false); replay.hidden=reduced.matches || !canAnimate;});
+    const onMotionChange=()=>{if(reduced.matches) finish(false); replay.hidden=!canAnimate;};
+    if (typeof reduced.addEventListener==='function') reduced.addEventListener('change',onMotionChange);
+    else if (typeof reduced.addListener==='function') reduced.addListener(onMotionChange);
     window.addEventListener('pagehide',()=>finish(false));
-    replay.hidden=reduced.matches || !canAnimate;
-    try { play(false); } catch(error) { finish(false); }
+    replay.hidden=!canAnimate;
+    try {
+      if (document.hidden && !reduced.matches && canAnimate) pendingAutoplay=true;
+      else play(false);
+    } catch(error) { finish(false); }
   })();
   </script>
 </body>
