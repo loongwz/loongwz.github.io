@@ -74,6 +74,10 @@
       .story-line { padding:24px; }
       .greeting-line { max-width:100%; padding:28px; }
     }
+
+    .flower-toggle { position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; border:0; border-radius:45%; padding:0; background:none; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+    .flower-toggle:focus-visible { outline:1px dashed #9f5945; outline-offset:4px; }
+
     @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { animation:none !important; transition:none !important; }
       body:not(.motion-requested) .intro { display:none !important; }
@@ -94,7 +98,7 @@
   </defs></svg>
   <div class="paper-grain" aria-hidden="true"></div>
   <div class="site" id="site">
-    <header class="masthead"><span class="monogram" aria-label="Zhilong Wan">zw.</span><a class="version-link" href="/play/?intro=skip">Explore the playful version ↗</a></header>
+    <header class="masthead"><span class="monogram" aria-label="Zhilong Wan">zw.</span><span class="masthead-note">A personal space</span></header>
     <main class="hero" id="main" tabindex="-1">
       <div class="intro-copy">
         <h1>Hi, I’m<span>Zhilong Wan.</span></h1>
@@ -102,8 +106,8 @@
         <p class="welcome">Welcome to my little corner of the web. Thanks for stopping by!</p>
         <p class="contact">Contact: <a class="inline-link" href="mailto:zhilongwan666@gmail.com">zhilongwan666@gmail.com</a></p>
       </div>
-      <figure class="drawing" aria-hidden="true">
-        <svg viewBox="0 0 700 760" fill="none"><g stroke="#292722" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#soft-ink)">
+      <figure class="drawing" id="public-flower">
+        <svg viewBox="0 0 700 760" fill="none" aria-hidden="true"><g stroke="#292722" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#soft-ink)">
     
     <path class="still-line" pathLength="1" stroke-width="14.5" d="M 320,247 C 314,280 320,315 319,350 C 318,393 321,435 317,478 C 315,520 316,550 315,578 C 314,596 313,611 316,625"/>
     
@@ -116,7 +120,8 @@
     <path class="still-line" pathLength="1" stroke-width="16" d="M 401,533 C 420,518 442,487 453,455 C 464,426 473,398 489,397 C 507,394 515,408 510,430 C 505,454 489,477 475,497 C 458,522 440,540 423,552"/>
     <path class="still-line" pathLength="1" stroke-width="14" d="M 425,552 C 450,532 480,498 495,467 C 506,443 517,434 530,441 C 548,450 542,473 531,496 C 518,521 500,546 486,565 C 474,580 461,594 450,599"/>
     <path class="still-line" pathLength="1" stroke-width="15" d="M 451,598 C 473,581 501,548 519,517 C 532,495 540,479 552,486 C 570,495 557,526 546,550 C 533,578 513,605 491,628 C 467,652 439,668 411,680"/>
-  </g><path class="petal-still" d="M 320 90 C 354 84 391 112 398 150 C 412 193 386 228 350 244 C 309 261 270 241 248 207 C 226 163 245 120 280 101 C 292 94 305 92 320 90 Z"></path></svg>
+  </g><path class="petal-still" id="public-bud" d="M 320 90 C 354 84 391 112 398 150 C 412 193 386 228 350 244 C 309 261 270 241 248 207 C 226 163 245 120 280 101 C 292 94 305 92 320 90 Z"></path></svg>
+        <button class="flower-toggle" id="flower-toggle" type="button" aria-label="Bloom or close the flower" aria-pressed="false" hidden></button>
       </figure>
     </main>
     <footer class="footer"><p class="closing">become a part of the story</p><button class="replay" id="replay" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8a8 8 0 1 1-1 7M4 3v6h6"></path></svg>Replay the opening</button></footer>
@@ -272,6 +277,33 @@
       else if (document.hidden && !reduced.matches && canAnimate) pendingAutoplay=true;
       else play(false);
     } catch(error) { finish(false); }
+
+    const flowerToggle=document.getElementById('flower-toggle');
+    const publicBud=document.getElementById('public-bud');
+    let publicFrame=0, publicOpenness=0, publicTarget=0, flowerPinned=false;
+    function bloomPublic(target) {
+      cancelAnimationFrame(publicFrame);
+      publicTarget=target;
+      flowerToggle.setAttribute('aria-pressed',String(Boolean(target)));
+      const from=publicOpenness, start=performance.now();
+      function draw(now) {
+        const t=reduced.matches?1:Math.min(1,(now-start)/620);
+        publicOpenness=from+(target-from)*smooth(t);
+        publicBud.setAttribute('d',bloomPath(publicOpenness));
+        if(t<1) publicFrame=requestAnimationFrame(draw);
+      }
+      publicFrame=requestAnimationFrame(draw);
+    }
+    flowerToggle.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')bloomPublic(1);});
+    flowerToggle.addEventListener('pointerleave',()=>{if(!flowerPinned)bloomPublic(0);});
+    flowerToggle.addEventListener('blur',()=>{if(!flowerPinned)bloomPublic(0);});
+    flowerToggle.addEventListener('click',event=>{
+      flowerPinned=event.detail===0?!flowerPinned:publicTarget===0;
+      bloomPublic(flowerPinned?1:0);
+    });
+    window.addEventListener('pagehide',()=>cancelAnimationFrame(publicFrame));
+    flowerToggle.hidden=false;
+
   })();
   </script>
 </body>
