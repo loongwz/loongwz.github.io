@@ -98,7 +98,7 @@
     .music-controls { position:absolute; bottom:8%; left:0; right:0; text-align:center; pointer-events:none; }
     #music-play { pointer-events:auto; position:relative; z-index:2; background:#ead5c7; color:#5b3f30; border:1px solid #c59b85; border-radius:24px; padding:11px 24px; min-height:44px; font-size:12px; }
     #music-status { font-size:11px; line-height:1.5; color:#746b5d; margin:10px 0 0; }
-    .world-view[data-world="music"] > svg { align-self:start; height:85%; }
+    .world-view[data-world="music"] > svg { align-self:start; height:100%; }
     .tone { transform-box:fill-box; transform-origin:center; transition:transform .2s,fill .2s; }
     .tone.lit { fill:#6baaa0; transform:translateY(-9px); }
     .spirit-float { animation:world-float 3.8s ease-in-out infinite; }
@@ -118,6 +118,65 @@
     @keyframes robot-wave { 30%,70% { transform:rotate(-5deg); } 50% { transform:rotate(3deg); } }
     @keyframes robot-blink { 0%,43%,47%,100% { transform:scaleY(1); } 45% { transform:scaleY(.08); } }
     @media (max-width:760px) { .drawing.worlds { width:100%; max-width:390px; margin:34px auto 8px; } .world-caption { font-size:14px; } .world-choices { gap:0 4px; } .poem h2 { font-size:19px; margin-bottom:22px; } .poem p { font-size:19px; } }
+
+.run-runner {
+  animation: run-bob .76s ease-in-out infinite;
+}
+.run-leg-front, .run-leg-back, .run-arm-front, .run-arm-back {
+  transform-box: view-box;
+}
+.run-leg-front {
+  transform-origin: 224px 218px;
+  animation: run-front-stride 1.52s ease-in-out infinite;
+}
+.run-leg-back {
+  transform-origin: 208px 216px;
+  animation: run-back-stride 1.52s ease-in-out infinite;
+}
+.run-arm-front {
+  transform-origin: 239px 160px;
+  animation: run-front-arm 1.52s ease-in-out infinite;
+}
+.run-arm-back {
+  transform-origin: 219px 163px;
+  animation: run-back-arm 1.52s ease-in-out infinite;
+}
+.run-shadow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: run-shadow-breathe .76s ease-in-out infinite;
+}
+.run-breeze {
+  animation: run-breeze-pass 1.52s ease-in-out infinite;
+}
+@keyframes run-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes run-front-stride {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(9deg); }
+}
+@keyframes run-back-stride {
+  0%, 100% { transform: rotate(9deg); }
+  50% { transform: rotate(-8deg); }
+}
+@keyframes run-front-arm {
+  0%, 100% { transform: rotate(5deg); }
+  50% { transform: rotate(-7deg); }
+}
+@keyframes run-back-arm {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(7deg); }
+}
+@keyframes run-shadow-breathe {
+  0%, 100% { transform: scaleX(1); opacity: .32; }
+  50% { transform: scaleX(.84); opacity: .21; }
+}
+@keyframes run-breeze-pass {
+  0%, 100% { transform: translateX(0); opacity: .45; }
+  50% { transform: translateX(-5px); opacity: .75; }
+}
 
     @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { animation:none !important; transition:none !important; }
@@ -165,9 +224,7 @@
     <path class="still-line" pathLength="1" stroke-width="15" d="M 451,598 C 473,581 501,548 519,517 C 532,495 540,479 552,486 C 570,495 557,526 546,550 C 533,578 513,605 491,628 C 467,652 439,668 411,680"/>
   </g><path class="petal-still" id="world-bud" d="M 320 90 C 354 84 391 112 398 150 C 412 193 386 228 350 244 C 309 261 270 241 248 207 C 226 163 245 120 280 101 C 292 94 305 92 320 90 Z"></path></svg></div>
 <div class="world-view" data-world="poem" hidden><div class="poem"><svg class="poem-flower" viewBox="0 0 32 32" aria-hidden="true" fill="#b97961"><circle cx="16" cy="8" r="5"></circle><circle cx="23" cy="12" r="5"></circle><circle cx="23" cy="20" r="5"></circle><circle cx="16" cy="24" r="5"></circle><circle cx="9" cy="20" r="5"></circle><circle cx="9" cy="12" r="5"></circle><circle cx="16" cy="16" r="6"></circle></svg><h2>An unfinished sky</h2><p><span>In the palm of a quiet hand,</span><span>a small sun learns to rise.</span><span>We bloom between a thought</span><span>and an unfinished sky.</span></p></div></div>
-<div class="world-view" data-world="music" hidden><svg viewBox="0 0 460 350" fill="none" aria-hidden="true"><g stroke="#c5b8a5" stroke-width="1.3"><path d="M61 120c100-7 211 6 338-1M61 140c100-7 211 6 338-1M61 160c100-7 211 6 338-1M61 180c100-7 211 6 338-1M61 200c100-7 211 6 338-1"></path></g><g stroke="#292722" stroke-width="3.5" stroke-linecap="round" fill="#dba58d"><g class="tone"><ellipse cx="100" cy="181" rx="11" ry="8" transform="rotate(-25 100 181)"></ellipse><path d="M110 178v-76q18 9 12 27" fill="none"></path></g><g class="tone"><ellipse cx="164" cy="160" rx="11" ry="8" transform="rotate(-25 164 160)"></ellipse><path d="M174 157V85" fill="none"></path></g><g class="tone"><ellipse cx="228" cy="141" rx="11" ry="8" transform="rotate(-25 228 141)"></ellipse><path d="M238 138V70q18 8 11 27" fill="none"></path></g><g class="tone"><ellipse cx="294" cy="159" rx="11" ry="8" transform="rotate(-25 294 159)"></ellipse><path d="M304 156V82" fill="none"></path></g><g class="tone"><ellipse cx="361" cy="181" rx="11" ry="8" transform="rotate(-25 361 181)"></ellipse><path d="M371 178V106q17 6 11 25" fill="none"></path></g></g><path d="M174 259c18 13 41 16 56 3s37-12 53 0" stroke="#6baaa0" stroke-width="2.5" stroke-linecap="round"></path><g fill="#6baaa0"><circle cx="165" cy="252" r="3"></circle><circle cx="291" cy="268" r="3"></circle></g></svg><div class="music-controls"><button type="button" id="music-play">Play melody</button><p id="music-status" aria-live="polite">A small, original music-box melody.</p></div></div>
-<div class="world-view" data-world="spirit" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" fill="none" aria-hidden="true">
-  <title id="little-spirit-title">A small turquoise-haired spirit, floating among little sparks</title>
+<div class="world-view" data-world="music" hidden><svg viewBox="0 0 460 420" fill="none" aria-hidden="true"><g stroke="#c5b8a5" stroke-width="1.3"><path d="M61 120c100-7 211 6 338-1M61 140c100-7 211 6 338-1M61 160c100-7 211 6 338-1M61 180c100-7 211 6 338-1M61 200c100-7 211 6 338-1"></path></g><g stroke="#292722" stroke-width="3.5" stroke-linecap="round" fill="#dba58d"><g class="tone"><ellipse cx="100" cy="181" rx="11" ry="8" transform="rotate(-25 100 181)"></ellipse><path d="M110 178v-76q18 9 12 27" fill="none"></path></g><g class="tone"><ellipse cx="164" cy="160" rx="11" ry="8" transform="rotate(-25 164 160)"></ellipse><path d="M174 157V85" fill="none"></path></g><g class="tone"><ellipse cx="228" cy="141" rx="11" ry="8" transform="rotate(-25 228 141)"></ellipse><path d="M238 138V70q18 8 11 27" fill="none"></path></g><g class="tone"><ellipse cx="294" cy="159" rx="11" ry="8" transform="rotate(-25 294 159)"></ellipse><path d="M304 156V82" fill="none"></path></g><g class="tone"><ellipse cx="361" cy="181" rx="11" ry="8" transform="rotate(-25 361 181)"></ellipse><path d="M371 178V106q17 6 11 25" fill="none"></path></g></g><path d="M95 262c30 18 49 21 77 8m115 3c23-11 43-8 68-20" stroke="#c5b8a5" stroke-width="1.3" stroke-dasharray="2 7" stroke-linecap="round"/><g transform="translate(129 159) scale(.44)">
   <g stroke="#292722" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
     <path d="M169 356c25 9 95 9 121-1" stroke="#c6755b" stroke-width="2" opacity=".35"/>
     <path d="M192 362c17 4 45 4 62 1" stroke="#c6755b" stroke-width="1.8" opacity=".22"/>
@@ -207,6 +264,58 @@
     </g>
     <circle class="star" cx="99" cy="281" r="2.5" fill="#6baaa0" stroke="none"/>
     <circle class="star" cx="326" cy="117" r="3" fill="#c6755b" stroke="none"/>
+  </g></g></svg><div class="music-controls"><button type="button" id="music-play">Play melody</button><p id="music-status" aria-live="polite">A small, original music-box melody.</p></div></div>
+<div class="world-view" data-world="running" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" fill="none" aria-hidden="true">
+  <title id="little-running-title">A little runner finding their rhythm on an open track</title>
+  <g stroke="#292722" stroke-linecap="round" stroke-linejoin="round">
+    <g class="run-track" stroke-width="1.6" opacity=".5">
+      <path d="M391 292c2 43-70 72-161 72-94 0-165-29-164-70 1-42 74-68 164-68 90-1 159 27 161 66Z" stroke="#c6755b"/>
+      <path d="M369 291c1 34-61 57-140 57-80 0-142-23-141-55 1-32 63-54 142-54 78 0 138 22 139 52Z" stroke="#c6755b"/>
+      <path d="M348 291c0 24-52 43-119 42-68 0-121-18-120-41 0-24 54-41 122-41 65 0 117 18 117 40Z" stroke="#c6755b"/>
+      <path d="m307 324 14 29m-24-25 14 29m-24-25 13 29" stroke-width="2"/>
+    </g>
+    <path class="run-shadow" d="M190 314c18 5 52 6 75 1" stroke="#6baaa0" stroke-width="3" opacity=".32"/>
+    <g class="run-runner" stroke-width="3.6">
+      <g class="run-arm-back">
+        <path d="m219 163-29 22-25-17" stroke="#82796f" stroke-width="8"/>
+        <path d="m219 163-29 22-25-17" stroke="#f4e8d9" stroke-width="4.4"/>
+        <path d="m166 169-4-7m4 7-8-2" stroke-width="2.7"/>
+      </g>
+      <g class="run-leg-back">
+        <path d="m208 216-20 38-35-19" stroke="#82796f" stroke-width="10"/>
+        <path d="m208 216-20 38-35-19" stroke="#f4e8d9" stroke-width="6.4"/>
+        <path d="m156 230-11 6c-4 1-11 3-10 7l8 5 18-13" fill="#6baaa0" stroke-width="2.8"/>
+        <path d="m138 245 6 3 18-13" stroke="#f7f4ee" stroke-width="1.7"/>
+      </g>
+      <g class="run-leg-front">
+        <path d="m224 218 34 22-20 45" stroke="#292722" stroke-width="10.5"/>
+        <path d="m224 218 34 22-20 45" stroke="#f4e8d9" stroke-width="6.9"/>
+        <path d="m234 281-1 13c9 2 22 4 30 2 3-2 2-5-3-6l-17-8" fill="#6baaa0" stroke-width="2.8"/>
+        <path d="M235 295c8 2 20 3 28 1" stroke="#f7f4ee" stroke-width="1.7"/>
+      </g>
+      <path d="m205 189 29 10-2 22-14 6-10-13-10-1 1-13Z" fill="#484740"/>
+      <path d="m208 207 9-2 10 15" stroke="#75746b" stroke-width="2"/>
+      <path d="m235 131-7 17 13 8 7-17" fill="#f4e8d9" stroke-width="3"/>
+      <path d="M229 145c-16 7-23 22-28 45 6 7 18 14 34 14 10-14 15-31 13-47-5-6-11-10-19-12Z" fill="#dba58d"/>
+      <path d="M217 170c-1 9 1 17 5 25m-19-7c8 7 16 10 31 12" stroke="#c6755b" stroke-width="2.4"/>
+      <g class="run-arm-front">
+        <path d="m240 165 24 20 26-21" stroke="#292722" stroke-width="9.4"/>
+        <path d="m240 165 24 20 26-21" stroke="#f4e8d9" stroke-width="5.8"/>
+        <path d="M235 151c10 2 17 9 22 17l-12 13-15-13" fill="#dba58d" stroke-width="3"/>
+        <path d="m288 165 4-7m-3 6 8-3" stroke-width="2.8"/>
+        <path d="m279 170 5 6" stroke="#6baaa0" stroke-width="3"/>
+      </g>
+      <path d="M228 111c2-17 16-27 30-20 10 4 14 15 12 24l5 7-7 3c-2 12-11 20-23 17-14-3-20-17-17-31Z" fill="#f4e8d9" stroke-width="3.2"/>
+      <path d="M228 122c-8-11-7-25 2-32 10-9 28-8 38 1l5 10c-12 4-21 0-27-5 0 10-5 17-10 20" fill="#484740" stroke-width="2.8"/>
+      <path d="M237 114c-5-4-8 1-4 6" stroke-width="2"/>
+      <path d="m261 111 1 1m-4 18c3 1 6 0 8-2" stroke-width="2.5"/>
+    </g>
+    <g class="run-breeze" stroke="#c6755b" stroke-width="2.1" opacity=".7">
+      <path d="m117 164 30 1m-37 16 18 1m-2-30 11 1"/>
+      <path d="m305 222 14-3m-8 13 23-4"/>
+    </g>
+    <path d="M334 116c3-7 9-9 13-6" stroke="#6baaa0" stroke-width="2.2"/>
+    <path d="m347 110 2 5 5-2" stroke="#6baaa0" stroke-width="2.2"/>
   </g>
 </svg>
 </div>
@@ -332,7 +441,7 @@
   </g>
 </svg>
 </div>
-</div><figcaption><p class="world-caption" id="world-caption" aria-live="polite">Touch the flower. See what grows.</p><div class="world-choices" id="world-choices" role="group" aria-label="Choose a little world" hidden><button type="button" data-world="flower" aria-pressed="true">Flower</button><button type="button" data-world="poem" aria-pressed="false">Poem</button><button type="button" data-world="music" aria-pressed="false">Music</button><button type="button" data-world="spirit" aria-pressed="false">Spirit</button><button type="button" data-world="cosmos" aria-pressed="false">Cosmos</button><button type="button" data-world="mind" aria-pressed="false">Mind</button><button type="button" data-world="chance" aria-pressed="false">Chance</button><button type="button" data-world="robot" aria-pressed="false">Robot</button></div></figcaption></figure>
+</div><figcaption><p class="world-caption" id="world-caption" aria-live="polite">Touch the flower. See what grows.</p><div class="world-choices" id="world-choices" role="group" aria-label="Choose a little world" hidden><button type="button" data-world="flower" aria-pressed="true">Flower</button><button type="button" data-world="poem" aria-pressed="false">Poem</button><button type="button" data-world="music" aria-pressed="false">Music</button><button type="button" data-world="running" aria-pressed="false">Running</button><button type="button" data-world="cosmos" aria-pressed="false">Cosmos</button><button type="button" data-world="mind" aria-pressed="false">Mind</button><button type="button" data-world="chance" aria-pressed="false">Chance</button><button type="button" data-world="robot" aria-pressed="false">Robot</button></div></figcaption></figure>
     </main>
     <footer class="footer"><p class="closing">become a part of the story</p><button class="replay" id="replay" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8a8 8 0 1 1-1 7M4 3v6h6"></path></svg>Replay the opening</button></footer>
   </div>
@@ -621,8 +730,8 @@
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   const views=[...root.querySelectorAll('.world-view')];
   const buttons=[...nav.querySelectorAll('button')];
-  const names=['flower','poem','music','spirit','cosmos','mind','chance','robot'];
-  const captions={flower:'Touch the flower. See what grows.',poem:'A small poem, held in a flower.',music:'A little melody, waiting to be heard.',spirit:'A tiny companion for curious days.',cosmos:'A whole universe in a small bloom.',mind:'A thought begins with a little spark.',chance:'Probability, belief, and uncertainty.',robot:'A little hello from a curious machine.'};
+  const names=['flower','poem','music','running','cosmos','mind','chance','robot'];
+  const captions={flower:'Touch the flower. See what grows.',poem:'A small poem, held in a flower.',music:'A little melody, and a tiny companion.',running:'One step, one breath, a little further.',cosmos:'A whole universe in a small bloom.',mind:'A thought begins with a little spark.',chance:'Probability, belief, and uncertainty.',robot:'A little hello from a curious machine.'};
   let current='flower', openness=0, bloomFrame=0, changing=0, transitionToken=0;
   let musicToken=0;
   function shape(open) {
@@ -697,6 +806,8 @@
   });
   document.getElementById('replay').addEventListener('click',()=>{musicToken++;window.FlowerMelody.stop();});
   trigger.hidden=false; nav.hidden=false;
+  const firstWorld=new URLSearchParams(location.search).get('world');
+  if(names.includes(firstWorld)) activate(firstWorld);
 })();
 
 </script>
