@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f7f7f2" />
-    <meta name="description" content="欢迎来到 Zhilong Wan 的空间" />
-    <title>Zhilong Wan 的空间</title>
+    <meta name="description" content="Zhilong Wan is a master's student at Tsinghua University and a member of the EDI Lab, with interests in embodied intelligence, probability, and statistics." />
+    <title>Zhilong Wan</title>
     <style>
       * { box-sizing: border-box; }
       body {
@@ -14,28 +14,44 @@
         min-height: 100svh;
         display: grid;
         place-items: center;
-        padding: 32px 24px;
+        padding: 64px 24px;
         background: #f7f7f2;
         color: #242d29;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         -webkit-font-smoothing: antialiased;
       }
-      main { width: min(100%, 1120px); }
+      main { width: min(100%, 760px); }
       h1 {
-        margin: 0;
-        text-align: center;
-        font-size: clamp(30px, 4.5vw, 60px);
+        margin: 0 0 32px;
+        font-size: clamp(34px, 4.5vw, 58px);
         font-weight: 550;
-        letter-spacing: -0.025em;
-        line-height: 1.6;
+        letter-spacing: -0.035em;
+        line-height: 1.2;
       }
       h1 span { white-space: nowrap; }
+      p {
+        margin: 0;
+        color: #59645d;
+        font-size: clamp(18px, 1.8vw, 21px);
+        line-height: 1.85;
+      }
+      p + p { margin-top: 24px; }
+      a {
+        color: #355d49;
+        text-decoration-color: #91a995;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+      a:hover { text-decoration-color: currentColor; }
+      a:focus-visible { outline: 2px solid #355d49; outline-offset: 4px; border-radius: 2px; }
       ::selection { background: #dbe7d7; }
     </style>
   </head>
   <body>
     <main>
-      <h1>欢迎来到 <span>Zhilong Wan</span> 的空间</h1>
+      <h1>Hi, I’m <span>Zhilong Wan.</span></h1>
+      <p>I’m a master’s student at Tsinghua University and a member of the <a href="https://nicsefc.ee.tsinghua.edu.cn/">EDI Lab</a>. My interests include embodied intelligence, probability, and statistics.</p>
+      <p>Welcome to my little corner of the web. Thanks for stopping by!</p>
     </main>
   </body>
 </html>
