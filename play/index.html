@@ -98,11 +98,9 @@
     .music-controls { position:absolute; bottom:8%; left:0; right:0; text-align:center; pointer-events:none; }
     #music-play { pointer-events:auto; position:relative; z-index:2; background:#ead5c7; color:#5b3f30; border:1px solid #c59b85; border-radius:24px; padding:11px 24px; min-height:44px; font-size:12px; }
     #music-status { font-size:11px; line-height:1.5; color:#746b5d; margin:10px 0 0; }
-    .world-view[data-world="music"] > svg { align-self:start; height:100%; }
+    .world-view[data-world="music"] > svg { align-self:start; height:85%; }
     .tone { transform-box:fill-box; transform-origin:center; transition:transform .2s,fill .2s; }
     .tone.lit { fill:#6baaa0; transform:translateY(-9px); }
-    .spirit-float { animation:world-float 3.8s ease-in-out infinite; }
-    .spirit-hair { transform-box:fill-box; transform-origin:50% 8%; animation:hair-sway 4.5s ease-in-out infinite; }
     .cosmos-orbit { transform-box:fill-box; transform-origin:center; animation:orbit-drift 9s ease-in-out infinite alternate; }
     .star,.neuron { animation:thought-glow 2.2s ease-in-out infinite alternate; }
     .star:nth-child(2n),.neuron:nth-child(2n) { animation-delay:-1.1s; }
@@ -110,72 +108,108 @@
     .robot-arm { transform-box:fill-box; transform-origin:15% 65%; animation:robot-wave 3s ease-in-out infinite; }
     .robot-eye { transform-box:fill-box; transform-origin:center; animation:robot-blink 4.2s infinite; }
     @keyframes world-appear { from { opacity:0; transform:translateY(9px) scale(.96); } to { opacity:1; transform:none; } }
-    @keyframes world-float { 50% { transform:translateY(-8px); } }
-    @keyframes hair-sway { 50% { transform:rotate(2deg); } }
     @keyframes orbit-drift { from { transform:rotate(-6deg); } to { transform:rotate(6deg); } }
     @keyframes thought-glow { from { opacity:.4; } to { opacity:1; } }
     @keyframes thought-draw { 0%,100% { stroke-dashoffset:1; opacity:.4; } 45%,70% { stroke-dashoffset:0; opacity:1; } }
     @keyframes robot-wave { 30%,70% { transform:rotate(-5deg); } 50% { transform:rotate(3deg); } }
     @keyframes robot-blink { 0%,43%,47%,100% { transform:scaleY(1); } 45% { transform:scaleY(.08); } }
-    @media (max-width:760px) { .drawing.worlds { width:100%; max-width:390px; margin:34px auto 8px; } .world-caption { font-size:14px; } .world-choices { gap:0 4px; } .poem h2 { font-size:19px; margin-bottom:22px; } .poem p { font-size:19px; } }
+    @media (max-width:760px) { .drawing.worlds { width:100%; max-width:390px; margin:34px auto 8px; } .world-caption { font-size:14px; } .world-choices { gap:0 4px; } .poem h2 { font-size:19px; margin-bottom:22px; } .poem p { font-size:clamp(15px,4.5vw,19px); } }
 
-.run-runner {
-  animation: run-bob .76s ease-in-out infinite;
-}
-.run-leg-front, .run-leg-back, .run-arm-front, .run-arm-back {
+/* Hip and shoulder placement is on a separate SVG translate wrapper.
+   Every animated joint below rotates around its own local (0, 0). */
+.run-runner { animation: run-body .86s linear infinite; }
+.run-far { opacity: .66; }
+.run-thigh, .run-shin, .run-foot, .run-upper-arm, .run-forearm {
   transform-box: view-box;
+  transform-origin: 0px 0px;
+  animation-duration: .86s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
-.run-leg-front {
-  transform-origin: 224px 218px;
-  animation: run-front-stride 1.52s ease-in-out infinite;
+.run-thigh { animation-name: run-thigh-cycle; }
+.run-shin { animation-name: run-shin-cycle; }
+.run-foot { animation-name: run-foot-cycle; }
+.run-upper-arm { animation-name: run-arm-cycle; }
+.run-forearm { animation-name: run-elbow-cycle; }
+.run-thigh-far, .run-shin-far, .run-foot-far,
+.run-upper-arm-far, .run-forearm-far { animation-delay: -.43s; }
+/* Preserve a clear running silhouette when motion is disabled. */
+.run-thigh-near { transform: rotate(-30.61deg); }
+.run-shin-near { transform: rotate(37.13deg); }
+.run-foot-near { transform: rotate(-6.51deg); }
+.run-thigh-far { transform: rotate(-15.59deg); }
+.run-shin-far { transform: rotate(117.9deg); }
+.run-foot-far { transform: rotate(-77.31deg); }
+.run-upper-arm-near { transform: rotate(32deg); }
+.run-forearm-near { transform: rotate(-94deg); }
+.run-upper-arm-far { transform: rotate(-35deg); }
+.run-forearm-far { transform: rotate(-105deg); }
+/* The two contact poses put the sole at y=310; compression is included
+   in the joint angles rather than lifting the feet with the torso. */
+@keyframes run-body {
+  0%, 25%, 50%, 75%, 100% { transform: translateY(0); }
+  12.5%, 62.5% { transform: translateY(2px); }
+  37.5%, 87.5% { transform: translateY(-3px); }
 }
-.run-leg-back {
-  transform-origin: 208px 216px;
-  animation: run-back-stride 1.52s ease-in-out infinite;
+@keyframes run-thigh-cycle {
+  0%, 100% { transform: rotate(-30.61deg); }
+  12.5% { transform: rotate(-21.52deg); }
+  25% { transform: rotate(21.33deg); }
+  37.5% { transform: rotate(27.32deg); }
+  50% { transform: rotate(-15.59deg); }
+  62.5% { transform: rotate(-68.21deg); }
+  75% { transform: rotate(-78.72deg); }
+  87.5% { transform: rotate(-50.26deg); }
 }
-.run-arm-front {
-  transform-origin: 239px 160px;
-  animation: run-front-arm 1.52s ease-in-out infinite;
+@keyframes run-shin-cycle {
+  0%, 100% { transform: rotate(37.13deg); }
+  12.5% { transform: rotate(49.61deg); }
+  25% { transform: rotate(21.34deg); }
+  37.5% { transform: rotate(64.65deg); }
+  50% { transform: rotate(117.9deg); }
+  62.5% { transform: rotate(130.69deg); }
+  75% { transform: rotate(85.99deg); }
+  87.5% { transform: rotate(40.56deg); }
 }
-.run-arm-back {
-  transform-origin: 219px 163px;
-  animation: run-back-arm 1.52s ease-in-out infinite;
+@keyframes run-foot-cycle {
+  0%, 100% { transform: rotate(-6.51deg); }
+  12.5% { transform: rotate(-28.09deg); }
+  25% { transform: rotate(-20.68deg); }
+  37.5% { transform: rotate(-46.97deg); }
+  50% { transform: rotate(-77.31deg); }
+  62.5% { transform: rotate(-77.48deg); }
+  75% { transform: rotate(-25.27deg); }
+  87.5% { transform: rotate(2.7deg); }
+}
+@keyframes run-arm-cycle {
+  0%, 100% { transform: rotate(32deg); }
+  12.5% { transform: rotate(15deg); }
+  25% { transform: rotate(-23deg); }
+  37.5% { transform: rotate(-44deg); }
+  50% { transform: rotate(-35deg); }
+  62.5% { transform: rotate(0deg); }
+  75% { transform: rotate(36deg); }
+  87.5% { transform: rotate(44deg); }
+}
+@keyframes run-elbow-cycle {
+  0%, 100% { transform: rotate(-94deg); }
+  25% { transform: rotate(-102deg); }
+  50% { transform: rotate(-105deg); }
+  75% { transform: rotate(-88deg); }
 }
 .run-shadow {
   transform-box: fill-box;
   transform-origin: center;
-  animation: run-shadow-breathe .76s ease-in-out infinite;
+  animation: run-ground-pulse .43s ease-in-out infinite;
 }
-.run-breeze {
-  animation: run-breeze-pass 1.52s ease-in-out infinite;
+@keyframes run-ground-pulse {
+  0%, 100% { transform: scaleX(1); opacity: .28; }
+  50% { transform: scaleX(.94); opacity: .22; }
 }
-@keyframes run-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-@keyframes run-front-stride {
-  0%, 100% { transform: rotate(-7deg); }
-  50% { transform: rotate(9deg); }
-}
-@keyframes run-back-stride {
-  0%, 100% { transform: rotate(9deg); }
-  50% { transform: rotate(-8deg); }
-}
-@keyframes run-front-arm {
-  0%, 100% { transform: rotate(5deg); }
-  50% { transform: rotate(-7deg); }
-}
-@keyframes run-back-arm {
-  0%, 100% { transform: rotate(-6deg); }
-  50% { transform: rotate(7deg); }
-}
-@keyframes run-shadow-breathe {
-  0%, 100% { transform: scaleX(1); opacity: .32; }
-  50% { transform: scaleX(.84); opacity: .21; }
-}
-@keyframes run-breeze-pass {
-  0%, 100% { transform: translateX(0); opacity: .45; }
-  50% { transform: translateX(-5px); opacity: .75; }
+.run-breeze { animation: run-air .86s linear infinite; }
+@keyframes run-air {
+  0%, 100% { transform: translateX(0); opacity: .55; }
+  50% { transform: translateX(-8px); opacity: .8; }
 }
 
     @media (prefers-reduced-motion:reduce) {
@@ -223,99 +257,99 @@
     <path class="still-line" pathLength="1" stroke-width="14" d="M 425,552 C 450,532 480,498 495,467 C 506,443 517,434 530,441 C 548,450 542,473 531,496 C 518,521 500,546 486,565 C 474,580 461,594 450,599"/>
     <path class="still-line" pathLength="1" stroke-width="15" d="M 451,598 C 473,581 501,548 519,517 C 532,495 540,479 552,486 C 570,495 557,526 546,550 C 533,578 513,605 491,628 C 467,652 439,668 411,680"/>
   </g><path class="petal-still" id="world-bud" d="M 320 90 C 354 84 391 112 398 150 C 412 193 386 228 350 244 C 309 261 270 241 248 207 C 226 163 245 120 280 101 C 292 94 305 92 320 90 Z"></path></svg></div>
-<div class="world-view" data-world="poem" hidden><div class="poem"><svg class="poem-flower" viewBox="0 0 32 32" aria-hidden="true" fill="#b97961"><circle cx="16" cy="8" r="5"></circle><circle cx="23" cy="12" r="5"></circle><circle cx="23" cy="20" r="5"></circle><circle cx="16" cy="24" r="5"></circle><circle cx="9" cy="20" r="5"></circle><circle cx="9" cy="12" r="5"></circle><circle cx="16" cy="16" r="6"></circle></svg><h2>An unfinished sky</h2><p><span>In the palm of a quiet hand,</span><span>a small sun learns to rise.</span><span>We bloom between a thought</span><span>and an unfinished sky.</span></p></div></div>
-<div class="world-view" data-world="music" hidden><svg viewBox="0 0 460 420" fill="none" aria-hidden="true"><g stroke="#c5b8a5" stroke-width="1.3"><path d="M61 120c100-7 211 6 338-1M61 140c100-7 211 6 338-1M61 160c100-7 211 6 338-1M61 180c100-7 211 6 338-1M61 200c100-7 211 6 338-1"></path></g><g stroke="#292722" stroke-width="3.5" stroke-linecap="round" fill="#dba58d"><g class="tone"><ellipse cx="100" cy="181" rx="11" ry="8" transform="rotate(-25 100 181)"></ellipse><path d="M110 178v-76q18 9 12 27" fill="none"></path></g><g class="tone"><ellipse cx="164" cy="160" rx="11" ry="8" transform="rotate(-25 164 160)"></ellipse><path d="M174 157V85" fill="none"></path></g><g class="tone"><ellipse cx="228" cy="141" rx="11" ry="8" transform="rotate(-25 228 141)"></ellipse><path d="M238 138V70q18 8 11 27" fill="none"></path></g><g class="tone"><ellipse cx="294" cy="159" rx="11" ry="8" transform="rotate(-25 294 159)"></ellipse><path d="M304 156V82" fill="none"></path></g><g class="tone"><ellipse cx="361" cy="181" rx="11" ry="8" transform="rotate(-25 361 181)"></ellipse><path d="M371 178V106q17 6 11 25" fill="none"></path></g></g><path d="M95 262c30 18 49 21 77 8m115 3c23-11 43-8 68-20" stroke="#c5b8a5" stroke-width="1.3" stroke-dasharray="2 7" stroke-linecap="round"/><g transform="translate(129 159) scale(.44)">
-  <g stroke="#292722" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M169 356c25 9 95 9 121-1" stroke="#c6755b" stroke-width="2" opacity=".35"/>
-    <path d="M192 362c17 4 45 4 62 1" stroke="#c6755b" stroke-width="1.8" opacity=".22"/>
-    <g class="spirit-float">
-      <g class="spirit-hair">
-        <path d="M184 121c-24-9-38 4-42 27-7 41 9 87-5 122-6 16-16 22-27 18 6 21 29 24 43 4 25-34 10-78 17-107 3-12 10-24 22-33" fill="#6baaa0"/>
-        <path d="M275 121c25-8 39 7 42 30 5 41-12 84 1 118 7 17 17 22 29 17-4 22-29 27-45 6-24-32-9-77-17-107-3-11-9-22-18-31" fill="#6baaa0"/>
-        <path d="M159 151c-7 37 8 87-12 123m152-123c6 37-10 82 10 121" stroke="#46796f" stroke-width="2.2"/>
-        <path d="m164 114 15 5-5 20-14-5Zm121 5 15-6 5 20-14 6Z" fill="#4d5350" stroke-width="2.4"/>
-      </g>
-      <path d="M204 272c-1 19-9 31-23 39-4 3-3 10 2 12 12 1 23-11 33-26m34-25c6 15 16 26 27 33 7 5 8 10 3 13-10 3-24-10-35-23" fill="#f9f6ef"/>
-      <path d="M199 209c-11 5-21 16-31 15-8-1-14-7-18-14m108-1c12 5 22 13 33 9 6-3 10-8 13-16"/>
-      <path d="M151 210l-1-9m0 9-8-5m160-3 6-8m-6 8 10-1" stroke-width="2.4"/>
-      <path d="M209 192c-7 13-12 29-13 49 17 10 47 11 68 0-3-18-9-37-18-49" fill="#e5e6df"/>
-      <path d="M196 241c-5 15-12 25-23 35 17 8 31 2 35 1 11 11 28 14 42 3 14 5 26 2 36-4-13-10-20-23-22-35-21 8-46 9-68 0Z" fill="#4d5350"/>
-      <path d="m205 247-6 25m20-22-2 29m19-29 4 30m12-33 11 26m-87 0c22 7 35 3 45 8 18 8 38-3 61-6" stroke="#8fbeb2" stroke-width="2.1"/>
-      <path d="m211 195 16 10-13 11-8-11m37-11-16 11 15 10 7-10" fill="#f9f6ef" stroke-width="2.2"/>
-      <path d="m223 205 9-1 2 8-4 5 6 20-7 8-7-8 3-20-4-6Z" fill="#6baaa0" stroke-width="2"/>
-      <path d="M177 145c-1-29 18-51 49-52 33-1 58 20 58 50 1 34-21 55-54 57-31 1-54-21-53-55Z" fill="#f9f6ef"/>
-      <path d="M177 149c-9-25 1-47 22-57 17-9 42-12 61-1 21 10 32 34 23 60-6-3-12-14-16-24-4-1-8 0-14 4-11-7-15-15-18-23-4 12-12 24-26 31 1-8 1-12-1-16-7 15-16 21-31 26Z" fill="#8fbeb2"/>
-      <path d="M176 144c-7 0-9 7-8 15 0 9 4 13 11 11l4-2-2-23Zm107 1c7-2 11 5 11 13 0 9-4 14-10 13l-4-2 1-23Z" fill="#4d5350" stroke-width="2.2"/>
-      <path d="m173 151 1 11m115-10-1 11" stroke="#6baaa0" stroke-width="2.2"/>
-      <path d="M286 170c-4 7-9 10-17 10" stroke-width="2"/>
-      <path d="m267 180-5 1" stroke-width="3.8"/>
-      <path d="M204 157c3-6 8-7 12-1m26 0c4-5 9-5 12 0" stroke-width="2.8"/>
-      <path d="M222 175c5 5 11 5 16-1" stroke-width="2.6"/>
-      <path d="M198 169l7 1m49-2 7-1" stroke="#c6755b" stroke-width="4" opacity=".6"/>
-      <path d="M185 119l-9-4m105 7 8-4" stroke="#c6755b" stroke-width="6"/>
-      <path d="M225 91c-2-15 7-24 17-26" stroke="#568c80" stroke-width="2.5"/>
-      <path d="M238 65c3-6 11-9 18-6-2 8-9 12-16 10" fill="#8fbeb2" stroke-width="2.2"/>
-    </g>
-    <g stroke-width="2" stroke="#c6755b">
-      <path class="star" d="m111 126 3-8 3 8 8 3-8 3-3 8-3-8-8-3Z"/>
-      <path class="star" d="m342 173 2-7 3 7 6 2-6 3-3 7-2-7-7-3Z"/>
-      <path class="star" d="m328 304 3-9 3 9 8 3-8 3-3 8-3-8-8-3Z"/>
-      <path d="m132 313 4-5m-6-9-5-2m200-204 5-6"/>
-    </g>
-    <circle class="star" cx="99" cy="281" r="2.5" fill="#6baaa0" stroke="none"/>
-    <circle class="star" cx="326" cy="117" r="3" fill="#c6755b" stroke="none"/>
-  </g></g></svg><div class="music-controls"><button type="button" id="music-play">Play melody</button><p id="music-status" aria-live="polite">A small, original music-box melody.</p></div></div>
+<div class="world-view" data-world="poem" hidden><div class="poem"><svg class="poem-flower" viewBox="0 0 32 32" aria-hidden="true" fill="#b97961"><circle cx="16" cy="8" r="5"></circle><circle cx="23" cy="12" r="5"></circle><circle cx="23" cy="20" r="5"></circle><circle cx="16" cy="24" r="5"></circle><circle cx="9" cy="20" r="5"></circle><circle cx="9" cy="12" r="5"></circle><circle cx="16" cy="16" r="6"></circle></svg><h2>Room for a Flower</h2><p><span>The seed knows nothing of the wind.</span><span>It loosens one small thread of home.</span><span>Where it will fall, no one can tell;</span><span>the earth has room for another flower.</span></p></div></div>
+<div class="world-view" data-world="music" hidden><svg viewBox="0 0 460 350" fill="none" aria-hidden="true"><g stroke="#c5b8a5" stroke-width="1.3"><path d="M61 120c100-7 211 6 338-1M61 140c100-7 211 6 338-1M61 160c100-7 211 6 338-1M61 180c100-7 211 6 338-1M61 200c100-7 211 6 338-1"></path></g><g stroke="#292722" stroke-width="3.5" stroke-linecap="round" fill="#dba58d"><g class="tone"><ellipse cx="100" cy="181" rx="11" ry="8" transform="rotate(-25 100 181)"></ellipse><path d="M110 178v-76q18 9 12 27" fill="none"></path></g><g class="tone"><ellipse cx="164" cy="160" rx="11" ry="8" transform="rotate(-25 164 160)"></ellipse><path d="M174 157V85" fill="none"></path></g><g class="tone"><ellipse cx="228" cy="141" rx="11" ry="8" transform="rotate(-25 228 141)"></ellipse><path d="M238 138V70q18 8 11 27" fill="none"></path></g><g class="tone"><ellipse cx="294" cy="159" rx="11" ry="8" transform="rotate(-25 294 159)"></ellipse><path d="M304 156V82" fill="none"></path></g><g class="tone"><ellipse cx="361" cy="181" rx="11" ry="8" transform="rotate(-25 361 181)"></ellipse><path d="M371 178V106q17 6 11 25" fill="none"></path></g></g><path d="M174 259c18 13 41 16 56 3s37-12 53 0" stroke="#6baaa0" stroke-width="2.5" stroke-linecap="round"></path><g fill="#6baaa0"><circle cx="165" cy="252" r="3"></circle><circle cx="291" cy="268" r="3"></circle></g></svg><div class="music-controls"><button type="button" id="music-play">Play melody</button><p id="music-status" aria-live="polite">A small, original music-box melody.</p></div></div>
 <div class="world-view" data-world="running" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" fill="none" aria-hidden="true">
-  <title id="little-running-title">A little runner finding their rhythm on an open track</title>
+  <title id="little-running-title">A runner leaning into their stride, with alternating footfalls on the track</title>
   <g stroke="#292722" stroke-linecap="round" stroke-linejoin="round">
     <g class="run-track" stroke-width="1.6" opacity=".5">
-      <path d="M391 292c2 43-70 72-161 72-94 0-165-29-164-70 1-42 74-68 164-68 90-1 159 27 161 66Z" stroke="#c6755b"/>
-      <path d="M369 291c1 34-61 57-140 57-80 0-142-23-141-55 1-32 63-54 142-54 78 0 138 22 139 52Z" stroke="#c6755b"/>
-      <path d="M348 291c0 24-52 43-119 42-68 0-121-18-120-41 0-24 54-41 122-41 65 0 117 18 117 40Z" stroke="#c6755b"/>
-      <path d="m307 324 14 29m-24-25 14 29m-24-25 13 29" stroke-width="2"/>
+      <path d="M391 298c2 35-70 60-161 60-94 0-165-24-164-58 1-35 74-57 164-57 90-1 159 23 161 55Z" stroke="#c6755b"/>
+      <path d="M369 298c1 27-61 47-140 47-80 0-142-20-141-46 1-27 63-44 142-44 78 0 138 18 139 43Z" stroke="#c6755b"/>
+      <path d="M348 298c0 20-52 35-119 35-68 0-121-15-120-34 0-20 54-34 122-34 65 0 117 15 117 33Z" stroke="#c6755b"/>
+      <path d="m305 326 14 21m-24-17 14 21m-24-17 13 21" stroke-width="2"/>
     </g>
-    <path class="run-shadow" d="M190 314c18 5 52 6 75 1" stroke="#6baaa0" stroke-width="3" opacity=".32"/>
-    <g class="run-runner" stroke-width="3.6">
-      <g class="run-arm-back">
-        <path d="m219 163-29 22-25-17" stroke="#82796f" stroke-width="8"/>
-        <path d="m219 163-29 22-25-17" stroke="#f4e8d9" stroke-width="4.4"/>
-        <path d="m166 169-4-7m4 7-8-2" stroke-width="2.7"/>
+    <path class="run-shadow" d="M166 314c29 4 66 4 98 0" stroke="#6baaa0" stroke-width="2.5" opacity=".28"/>
+    <g class="run-runner" stroke-width="3.2">
+<g transform="translate(239 156)" class="run-far">
+      <g class="run-upper-arm run-upper-arm-far">
+        <path d="M0 0 0 29" stroke-width="9"/>
+        <path d="M0 0 0 29" stroke="#f4e8d9" stroke-width="5.4"/>
+        <path d="M-7 1-6 13 7 13 8 1" fill="#dba58d" stroke-width="2.7"/>
+        <g transform="translate(0 29)">
+          <g class="run-forearm run-forearm-far">
+            <path d="M0 0 0 28" stroke-width="8.2"/>
+            <path d="M0 0 0 28" stroke="#f4e8d9" stroke-width="4.8"/>
+            <path d="M-3 26c-3 3-1 7 2 7 4 0 6-3 5-6" fill="#f4e8d9" stroke-width="2.5"/>
+            <path d="m-3 21 6 0" stroke="#6baaa0" stroke-width="2.2"/>
+          </g>
+        </g>
       </g>
-      <g class="run-leg-back">
-        <path d="m208 216-20 38-35-19" stroke="#82796f" stroke-width="10"/>
-        <path d="m208 216-20 38-35-19" stroke="#f4e8d9" stroke-width="6.4"/>
-        <path d="m156 230-11 6c-4 1-11 3-10 7l8 5 18-13" fill="#6baaa0" stroke-width="2.8"/>
-        <path d="m138 245 6 3 18-13" stroke="#f7f4ee" stroke-width="1.7"/>
+    </g><g transform="translate(218 216)" class="run-far">
+      <g class="run-thigh run-thigh-far">
+        <path d="M0 0 0 48" stroke-width="12"/>
+        <path d="M0 0 0 48" stroke="#f4e8d9" stroke-width="7.8"/>
+        <path d="M-7 0-7 15 7 17 8 0" fill="#484740" stroke-width="2.5"/>
+        <g transform="translate(0 48)">
+          <g class="run-shin run-shin-far">
+            <path d="M0 0 0 48" stroke-width="10"/>
+            <path d="M0 0 0 48" stroke="#f4e8d9" stroke-width="6"/>
+            <g transform="translate(0 48)">
+              <g class="run-foot run-foot-far">
+                <path d="M-5-4-7 3c5 3 19 3 27 1 3-1 3-4-1-6L5-5 3-9" fill="#6baaa0" stroke-width="2.8"/>
+                <path d="M-6 4c8 2 19 2 26 0" stroke="#f7f4ee" stroke-width="1.7"/>
+              </g>
+            </g>
+          </g>
+        </g>
       </g>
-      <g class="run-leg-front">
-        <path d="m224 218 34 22-20 45" stroke="#292722" stroke-width="10.5"/>
-        <path d="m224 218 34 22-20 45" stroke="#f4e8d9" stroke-width="6.9"/>
-        <path d="m234 281-1 13c9 2 22 4 30 2 3-2 2-5-3-6l-17-8" fill="#6baaa0" stroke-width="2.8"/>
-        <path d="M235 295c8 2 20 3 28 1" stroke="#f7f4ee" stroke-width="1.7"/>
+    </g><g transform="translate(218 216)" class="run-near">
+      <g class="run-thigh run-thigh-near">
+        <path d="M0 0 0 48" stroke-width="12"/>
+        <path d="M0 0 0 48" stroke="#f4e8d9" stroke-width="7.8"/>
+        <path d="M-7 0-7 15 7 17 8 0" fill="#484740" stroke-width="2.5"/>
+        <g transform="translate(0 48)">
+          <g class="run-shin run-shin-near">
+            <path d="M0 0 0 48" stroke-width="10"/>
+            <path d="M0 0 0 48" stroke="#f4e8d9" stroke-width="6"/>
+            <g transform="translate(0 48)">
+              <g class="run-foot run-foot-near">
+                <path d="M-5-4-7 3c5 3 19 3 27 1 3-1 3-4-1-6L5-5 3-9" fill="#6baaa0" stroke-width="2.8"/>
+                <path d="M-6 4c8 2 19 2 26 0" stroke="#f7f4ee" stroke-width="1.7"/>
+              </g>
+            </g>
+          </g>
+        </g>
       </g>
-      <path d="m205 189 29 10-2 22-14 6-10-13-10-1 1-13Z" fill="#484740"/>
-      <path d="m208 207 9-2 10 15" stroke="#75746b" stroke-width="2"/>
-      <path d="m235 131-7 17 13 8 7-17" fill="#f4e8d9" stroke-width="3"/>
-      <path d="M229 145c-16 7-23 22-28 45 6 7 18 14 34 14 10-14 15-31 13-47-5-6-11-10-19-12Z" fill="#dba58d"/>
-      <path d="M217 170c-1 9 1 17 5 25m-19-7c8 7 16 10 31 12" stroke="#c6755b" stroke-width="2.4"/>
-      <g class="run-arm-front">
-        <path d="m240 165 24 20 26-21" stroke="#292722" stroke-width="9.4"/>
-        <path d="m240 165 24 20 26-21" stroke="#f4e8d9" stroke-width="5.8"/>
-        <path d="M235 151c10 2 17 9 22 17l-12 13-15-13" fill="#dba58d" stroke-width="3"/>
-        <path d="m288 165 4-7m-3 6 8-3" stroke-width="2.8"/>
-        <path d="m279 170 5 6" stroke="#6baaa0" stroke-width="3"/>
+    </g>
+      <path d="m208 190 28 8-8 24-14 1-2-11-12-3Z" fill="#484740"/>
+      <path d="m239 135-10 15 13 8 9-18" fill="#f4e8d9" stroke-width="2.8"/>
+      <path d="M230 145c-15 8-21 24-27 46 9 8 18 11 32 11 9-15 15-31 15-47-5-6-12-10-20-10Z" fill="#dba58d"/>
+      <path d="M218 168c-2 9-1 17 2 24m-15-3c8 6 17 10 28 10" stroke="#c6755b" stroke-width="2.2"/>
+<g transform="translate(239 156)" class="run-near">
+      <g class="run-upper-arm run-upper-arm-near">
+        <path d="M0 0 0 29" stroke-width="9"/>
+        <path d="M0 0 0 29" stroke="#f4e8d9" stroke-width="5.4"/>
+        <path d="M-7 1-6 13 7 13 8 1" fill="#dba58d" stroke-width="2.7"/>
+        <g transform="translate(0 29)">
+          <g class="run-forearm run-forearm-near">
+            <path d="M0 0 0 28" stroke-width="8.2"/>
+            <path d="M0 0 0 28" stroke="#f4e8d9" stroke-width="4.8"/>
+            <path d="M-3 26c-3 3-1 7 2 7 4 0 6-3 5-6" fill="#f4e8d9" stroke-width="2.5"/>
+            <path d="m-3 21 6 0" stroke="#6baaa0" stroke-width="2.2"/>
+          </g>
+        </g>
       </g>
-      <path d="M228 111c2-17 16-27 30-20 10 4 14 15 12 24l5 7-7 3c-2 12-11 20-23 17-14-3-20-17-17-31Z" fill="#f4e8d9" stroke-width="3.2"/>
-      <path d="M228 122c-8-11-7-25 2-32 10-9 28-8 38 1l5 10c-12 4-21 0-27-5 0 10-5 17-10 20" fill="#484740" stroke-width="2.8"/>
-      <path d="M237 114c-5-4-8 1-4 6" stroke-width="2"/>
-      <path d="m261 111 1 1m-4 18c3 1 6 0 8-2" stroke-width="2.5"/>
+    </g>
+      <path d="M235 111c2-16 16-25 29-18 9 4 13 14 11 23l5 6-7 3c-2 11-10 18-21 16-14-3-20-16-17-30Z" fill="#f4e8d9" stroke-width="3"/>
+      <path d="M235 121c-8-10-7-24 2-31 10-8 26-7 35 2l4 10c-10 3-19 0-25-5-1 9-5 15-10 19" fill="#484740" stroke-width="2.7"/>
+      <path d="M243 114c-5-3-7 2-3 6" stroke-width="1.9"/>
+      <path d="m268 112 1 1m-4 16c3 1 5 0 7-2" stroke-width="2.3"/>
     </g>
     <g class="run-breeze" stroke="#c6755b" stroke-width="2.1" opacity=".7">
-      <path d="m117 164 30 1m-37 16 18 1m-2-30 11 1"/>
-      <path d="m305 222 14-3m-8 13 23-4"/>
+      <path d="m112 164 30 1m-37 16 18 1m-2-30 11 1"/>
+      <path d="m306 216 14-3m-8 13 23-4"/>
     </g>
-    <path d="M334 116c3-7 9-9 13-6" stroke="#6baaa0" stroke-width="2.2"/>
-    <path d="m347 110 2 5 5-2" stroke="#6baaa0" stroke-width="2.2"/>
+    <path d="M334 116c3-7 9-9 13-6m0 0 2 5 5-2" stroke="#6baaa0" stroke-width="2.2"/>
   </g>
 </svg>
 </div>
@@ -731,7 +765,7 @@
   const views=[...root.querySelectorAll('.world-view')];
   const buttons=[...nav.querySelectorAll('button')];
   const names=['flower','poem','music','running','cosmos','mind','chance','robot'];
-  const captions={flower:'Touch the flower. See what grows.',poem:'A small poem, held in a flower.',music:'A little melody, and a tiny companion.',running:'One step, one breath, a little further.',cosmos:'A whole universe in a small bloom.',mind:'A thought begins with a little spark.',chance:'Probability, belief, and uncertainty.',robot:'A little hello from a curious machine.'};
+  const captions={flower:'Touch the flower. See what grows.',poem:'On fate, and all that remains unwritten.',music:'A little melody, waiting to be heard.',running:'One step, one breath, a little further.',cosmos:'A whole universe in a small bloom.',mind:'A thought begins with a little spark.',chance:'Probability, belief, and uncertainty.',robot:'A little hello from a curious machine.'};
   let current='flower', openness=0, bloomFrame=0, changing=0, transitionToken=0;
   let musicToken=0;
   function shape(open) {
