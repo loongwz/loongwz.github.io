@@ -27,6 +27,10 @@
     h1 span { display:block; }
     .bio { max-width:535px; font-size:clamp(17px,1.48vw,19px); line-height:1.9; color:#59564e; margin:0; text-wrap:pretty; }
     .welcome { margin:22px 0 0; color:#726c61; font-size:clamp(16px,1.35vw,18px); line-height:1.8; max-width:500px; }
+    .inline-link { color:inherit; text-decoration-line:underline; text-decoration-color:#b88a72; text-decoration-thickness:1px; text-underline-offset:4px; }
+    .inline-link:hover { color:var(--ink); text-decoration-color:currentColor; }
+    .inline-link:focus-visible { outline:2px solid #9f5945; outline-offset:4px; }
+    .contact { margin:24px 0 0; font-size:15px; line-height:1.8; color:#665d51; overflow-wrap:anywhere; }
     .drawing { position:relative; margin:0; width:100%; max-width:450px; justify-self:end; transform:rotate(-3deg); }
     .drawing::before { content:""; position:absolute; width:63%; height:58%; left:15%; top:21%; background:#ebc9b64f; border-radius:47% 53% 58% 42% / 44% 56% 44% 56%; transform:rotate(12deg); filter:blur(28px); }
     .drawing svg { display:block; position:relative; width:100%; height:auto; overflow:visible; }
@@ -90,8 +94,9 @@
     <main class="hero" id="main" tabindex="-1">
       <div class="intro-copy">
         <h1>Hi, I’m<span>Zhilong Wan.</span></h1>
-        <p class="bio">I’m a master’s student at Tsinghua University and a member of the EDI Lab. My interests include embodied intelligence, probability, and statistics.</p>
+        <p class="bio">I’m a master’s student at Tsinghua University and a member of the <a class="inline-link" href="https://thusigs-edi-lab.github.io/">EDI Lab</a>. My interests include embodied intelligence, probability, and statistics.</p>
         <p class="welcome">Welcome to my little corner of the web. Thanks for stopping by!</p>
+        <p class="contact">Contact: <a class="inline-link" href="mailto:zhilongwan666@gmail.com">zhilongwan666@gmail.com</a></p>
       </div>
       <figure class="drawing" aria-hidden="true">
         <svg viewBox="0 0 700 760" fill="none"><g stroke="#292722" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#soft-ink)">
